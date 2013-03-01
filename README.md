@@ -20,6 +20,7 @@ All Version are updated when released on DayZ Commander!
 * DayZ Namalsk: v0.74
 * DayZ Oring: v1.2
 * DayZ Panthera: v1.8
+* DayZ Redux: v1.0.0
 * DayZ Takistan: v1.7
 * DayZ Taviana (DayzTaviana.com): v2.0
 * DayZ Taviana (DayzLand.eu): v1.5.1
