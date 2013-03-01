@@ -33,8 +33,8 @@ Installing takes around 5-10 minutes depending on your skill level.
 
 * These files are just to compare to your mission files, So that you know what to change to get the Debug monitor working on the version you have. 
 * If you do nownload these files remember to change the following.
-* 1 Instance ID
-* 2 Depending on what Hive you use you will have to add a few lines or remove a line. Compare it to yours before replacing.
+* 1. Instance ID
+* 2. Depending on what Hive you use you will have to add a few lines or remove a line. Compare it to yours before replacing.
 
 ##Notes
 Trigger version will not work with FPS, Will be looking into this further and see if I can find a work around for it.
