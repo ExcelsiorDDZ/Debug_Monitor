@@ -302,7 +302,7 @@ while {true} do {
 	(dayz_skilllevel),
 	(count entities "zZombie_Base"),
 	({alive _x} count entities "zZombie_Base")];
-
+	
 	// If in combat, display counter and restrict logout
 	_startcombattimer      = player getVariable["startcombattimer",0];
 	if (_startcombattimer == 1) then {

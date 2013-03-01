@@ -1,4 +1,4 @@
- /*	
+/*	
 	FUNCTION COMPILES
 */
 //Player only
@@ -56,7 +56,7 @@ if (!isDedicated) then {
 	zombie_findTargetAgent = 	compile preprocessFileLineNumbers "\z\addons\dayz_code\compile\zombie_findTargetAgent.sqf";
 	zombie_loiter = 			compile preprocessFileLineNumbers "\z\addons\dayz_code\compile\zombie_loiter.sqf";			//Server compile, used for loiter behaviour
 	zombie_generate = 			compile preprocessFileLineNumbers "\z\addons\dayz_code\compile\zombie_generate.sqf";			//Server compile, used for loiter behaviour
-	wild_spawnZombies = 		compile preprocessFileLineNumbers "\z\addons\dayz_code\compile\wild_spawnZombies.sqf";			//Server compile, used for loiter behaviour
+	
 	
 	//
 	dog_findTargetAgent =   compile preprocessFileLineNumbers "\z\addons\dayz_code\compile\dog_findTargetAgent.sqf";
@@ -93,7 +93,7 @@ if (!isDedicated) then {
 	//System
 	player_monitor =			compile preprocessFileLineNumbers "\z\addons\dayz_code\system\player_monitor.sqf";
 	player_spawn_1 =			compile preprocessFileLineNumbers "\z\addons\dayz_code\system\player_spawn_1.sqf";
-	player_spawn_2 =			compile preprocessFileLineNumbers "debug\player_spawn_2.sqf";
+	player_spawn_2 =			compile preprocessFileLineNumbers "\z\addons\dayz_code\system\player_spawn_2.sqf";
 	onPreloadStarted 			"dayz_preloadFinished = false;";
 	onPreloadFinished 			"dayz_preloadFinished = true;";
 	
@@ -219,13 +219,21 @@ if (!isDedicated) then {
 		_dikCode = 	_this select 1;
 		_handled = false;
 		if (_dikCode in (actionKeys "GetOver")) then {
-			if (!r_fracture_legs and (time - dayz_lastCheckBit > 4)) then {
-				_inBuilding = [player] call fnc_isInsideBuilding;
-				_nearbyObjects = nearestObjects[getPosATL player, ["TentStorage", "Hedgehog_DZ", "Sandbag1_DZ","TrapBear","Wire_cat1"], 8];
-				if (!_inBuilding and (count _nearbyObjects == 0)) then {
-					dayz_lastCheckBit = time;
-					call player_CombatRoll;
+			DoRE = ({isPlayer _x} count (player nearEntities ["AllVehicles",500]) > 1);
+			if (canRoll && animationState player in ["amovpercmrunslowwrfldf","amovpercmrunsraswrfldf","amovpercmevaslowwrfldf","amovpercmevasraswrfldf"]) then {
+				canRoll = false;
+				null = [] spawn {
+					if (DoRE) then {
+						[nil, player, rSWITCHMOVE, "ActsPercMrunSlowWrflDf_FlipFlopPara"] call RE;
+					} else {
+						player switchMove "ActsPercMrunSlowWrflDf_FlipFlopPara";
+					};
+					sleep 0.3;
+					player setVelocity [(velocity player select 0) + 1.5 * sin direction player, (velocity player select 1) + 1.5 * cos direction player, (velocity player select 2) + 4];
+					sleep 1;
+					canRoll = true;
 				};
+				_handled = true;
 			};
 		};
 		//if (_dikCode == 57) then {_handled = true}; // space
@@ -251,7 +259,9 @@ if (!isDedicated) then {
 			dayz_lastCheckBit = time;
 			[player,15,false,(getPosATL player)] spawn player_alertZombies;
 		};
-		if ((_dikCode == 0x3E or _dikCode == 0x0F or _dikCode == 0xD3) and (time - dayz_lastCheckBit > 10)) then {
+		
+		
+		if ((_dikCode == 0x38 or _dikCode == 0xB8) and (time - dayz_lastCheckBit > 10)) then {
 			dayz_lastCheckBit = time;
 			call dayz_forceSave;
 		};
@@ -261,25 +271,6 @@ if (!isDedicated) then {
 		};
 		*/
 		_handled
-	};
-	
-	player_CombatRoll = {
-		DoRE = ({isPlayer _x} count (player nearEntities ["AllVehicles",100]) > 1);
-		if (canRoll && animationState player in ["amovpercmrunslowwrfldf","amovpercmrunsraswrfldf","amovpercmevaslowwrfldf","amovpercmevasraswrfldf"]) then {
-			canRoll = false;
-			null = [] spawn {
-				if (DoRE) then {
-					[nil, player, rSWITCHMOVE, "ActsPercMrunSlowWrflDf_FlipFlopPara"] call RE;
-				} else {
-					player switchMove "ActsPercMrunSlowWrflDf_FlipFlopPara";
-				};
-				sleep 0.3;
-				player setVelocity [(velocity player select 0) + 1.5 * sin direction player, (velocity player select 1) + 1.5 * cos direction player, (velocity player select 2) + 4];
-				sleep 1;
-				canRoll = true;
-			};
-			_handled = true;
-		};
 	};
 	
 	player_serverModelChange = {

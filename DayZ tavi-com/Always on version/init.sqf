@@ -1,60 +1,70 @@
-// Mission Initialization
-startLoadingScreen ["", "DayZ_loadingScreen"];
-cutText ["", "BLACK OUT"];
+startLoadingScreen ["","DayZ_loadingScreen"];
 enableSaving [false, false];
 
-// Variable Initialization
-dayZ_instance = 1;
-hiveInUse = true;
-dayzHiveRequest = [];
+dayZ_instance = 1;	//The instance
+hiveInUse	=	true;
 initialized = false;
 dayz_previousID = 0;
 
-// Settings
-player setVariable ["BIS_noCoreConversations", true]; 	// Disable greeting menu
-//enableRadio false; 									// Disable global chat radio messages
+//call compile preprocessFileLineNumbers "\z\addons\dayz_code\init\variables.sqf"; //Initilize the Variables (IMPORTANT: Must happen very early)
+call compile preprocessFileLineNumbers "debug\variables.sqf"; //Initilize the Variables (IMPORTANT: Must happen very early)
 
-// Compile and call important functions
-//call compile preprocessFileLineNumbers "\z\addons\dayz_code\init\variables.sqf";
+// (Taviana) Override some of the variables:
 call compile preprocessFileLineNumbers "\kh\dayztaviana\init\variables.sqf";
-call compile preprocessFileLineNumbers "debug\variables.sqf";				//Initilize the Variables (IMPORTANT: Must happen very early)
+
+// Load in the settings compiles:
+call compile preprocessFileLineNumbers "\kh\dayztaviana\settingsinit\kh_compiles.sqf";
+
+diag_log "Started executing user settings file.";
+call compile preprocessFileLineNumbers "settings.sqf";
+diag_log "Finished executing user settings file.";
+
 progressLoadingScreen 0.1;
-call compile preprocessFileLineNumbers "\z\addons\dayz_code\init\publicEH.sqf";
+call compile preprocessFileLineNumbers "\z\addons\dayz_code\init\publicEH.sqf";	//Initilize the publicVariable event handlers
 progressLoadingScreen 0.2;
-call compile preprocessFileLineNumbers "\z\addons\dayz_code\medical\setup_functions_med.sqf";
+call compile preprocessFileLineNumbers "\z\addons\dayz_code\medical\setup_functions_med.sqf"; //Functions used by CLIENT for medical
 progressLoadingScreen 0.4;
-//call compile preprocessFileLineNumbers "\kh\dayztaviana\init\compiles.sqf";
-call compile preprocessFileLineNumbers "debug\compiles.sqf";				//Compile regular functions
+
+// (Taviana) Don't call the regular compile:
+// call compile preprocessFileLineNumbers "\z\addons\dayz_code\init\compiles.sqf"; //Compile regular functions
+
+// (Taviana) Instead, call a copy of the DayZ 1.7.4.4 compiles:
+call compile preprocessFileLineNumbers "\kh\dayztaviana\init\compiles.sqf"; //Compile regular functions
+
+// (Taviana) Set up the for maule multiplayer prop hit support:
+call compile preprocessFileLineNumbers "\khr\maule\scripts\maule_init.sqf";
+
+/*
+The Bliss package system works a bit like sticking your arm in a bunch
+of snake nests and noticing you don't always get bitten. In this case
+we got bitten; this line is to fool the merge process:
+
+call compile preprocessFileLineNumbers "\z\addons\dayz_code\init\compiles.sqf"; //Compile regular functions
+*/
+
 progressLoadingScreen 1.0;
 
-// Set Tonemapping
-"Filmic" setToneMappingParams [0.153, 0.357, 0.231, 0.1573, 0.011, 3.750, 6, 4];
-setToneMapping "Filmic";
+player setVariable ["BIS_noCoreConversations", true];
+enableRadio false;
+
+"filmic" setToneMappingParams [0.153, 0.357, 0.231, 0.1573, 0.011, 3.750, 6, 4]; setToneMapping "Filmic";
 
 player_spawn_2 = compile preprocessFileLineNumbers "debug\player_spawn_2.sqf";
 
-// Run the server monitor
 if (isServer) then {
+	hiveInUse = true;
 	_serverMonitor = [] execVM "\z\addons\dayz_server\system\server_monitor.sqf";
 };
 
-if (!isServer && isNull player) then {
-	waitUntil { !isNull player };
-	waitUntil { time > 3 };
-};
-
-if (!isServer && player != player) then {
-	waitUntil { player == player };
-	waitUntil { time > 3 };
-};
-
-// Run the player monitor
 if (!isDedicated) then {
 	0 fadeSound 0;
-	0 cutText [(localize "STR_AUTHENTICATING"), "BLACK FADED", 60];
-	
-	_id = player addEventHandler ["Respawn", { _id = [] spawn player_death; }];
-	_playerMonitor = [] execVM "\z\addons\dayz_code\system\player_monitor.sqf";
-	
-	[] execVM "actions.sqf";
+	0 cutText [(localize "STR_AUTHENTICATING"), "BLACK FADED",60];
+	_id = player addEventHandler ["Respawn", {_id = [] spawn player_death;}];
+	_playerMonitor = 	[] execVM "\z\addons\dayz_code\system\player_monitor.sqf";
+
+};
+
+// Extra actions for Taviana:
+if (!isDedicated) then {
+	[] execVM "kh_actions.sqf";
 };

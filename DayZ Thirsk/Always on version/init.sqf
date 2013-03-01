@@ -22,8 +22,7 @@ call compile preprocessFileLineNumbers "\z\addons\dayz_code\init\publicEH.sqf";	
 progressLoadingScreen 0.2;
 call compile preprocessFileLineNumbers "\z\addons\dayz_code\medical\setup_functions_med.sqf";	//Functions used by CLIENT for medical
 progressLoadingScreen 0.4;
-//call compile preprocessFileLineNumbers "\z\addons\dayz_code\init\compiles.sqf";				//Compile regular functions
-call compile preprocessFileLineNumbers "debug\compiles.sqf";				//Compile regular functions
+call compile preprocessFileLineNumbers "\z\addons\dayz_code\init\compiles.sqf";				//Compile regular functions
 progressLoadingScreen 1.0;
 
 // Set Tonemapping

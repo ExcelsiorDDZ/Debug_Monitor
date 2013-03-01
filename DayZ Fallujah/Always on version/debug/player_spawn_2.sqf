@@ -103,9 +103,9 @@ while {true} do {
 	};
 	
 	//Has infection?
-	//if (r_player_infected) then {
-	//	[player,"cough",8,false] call dayz_zombieSpeak;
-	//};
+	if (r_player_infected) then {
+		[player,"cough",8,true] call dayz_zombieSpeak;
+	};
 
 	//Record Check
 	_lastUpdate = 	time - dayZ_lastPlayerUpdate;
@@ -154,7 +154,7 @@ while {true} do {
 						_rnd = random 1;
 						if (_rnd > 0.7) then {
 							r_player_infected = true;
-							//player setVariable["USEC_infected",true];
+							player setVariable["USEC_infected",true];
 						};
 					};
 				};
@@ -165,35 +165,19 @@ while {true} do {
 					_rnd = random 1;
 					if (_rnd > 0.95) then {
 						r_player_infected = true;
-						//player setVariable["USEC_infected",true];
+						player setVariable["USEC_infected",true];
 					};
 				};
 			};
 		};
 	};
 	
-	//If has infection reduce blood cough and add shake
+	//If has infection reduce blood
 	if (r_player_infected) then {
-		if !(player getVariable["USEC_infected",false]) then { 
-			player setVariable["USEC_infected",true,true];  
-		};
-		
-		_rnd = ceil (random 8);
-		[player,"cough",_rnd,false,9] call dayz_zombieSpeak;
-		
-		if (_rnd < 3) then {
-			addCamShake [2, 1, 25];
-		};
 		if (r_player_blood > 3000) then {
 			r_player_blood = r_player_blood - 3;
 			player setVariable["USEC_BloodQty",r_player_blood];
 		};
-	};
-	
-	//Pain Shake Effects
-	if (r_player_inpain and !r_player_unconscious) then {
-		playSound "breath_1";
-		addCamShake [2, 1, 25];
 	};
 	
 	//Hunger Effect
@@ -234,9 +218,7 @@ while {true} do {
 		if ((time - dayz_damageCounter) > 180) then {
 			if (!r_player_unconscious) then {
 				dayz_canDisconnect = true;
-				//["dayzDiscoRem",getPlayerUID player] call callRpcProcedure;
-				dayzDiscoRem = getPlayerUID player;
-				publicVariable "dayzDiscoRem";
+				["dayzDiscoRem",getPlayerUID player] call callRpcProcedure;
 				
 				//Ensure Control is hidden
 				_display = uiNamespace getVariable 'DAYZ_GUI_display';
@@ -249,15 +231,8 @@ while {true} do {
 	//Save Checker
 	if (dayz_unsaved) then {
 		if ((time - dayz_lastSave) > _saveTime) then {
-			//["dayzPlayerSave",[player,dayz_Magazines,false]] call callRpcProcedure;
+			["dayzPlayerSave",[player,dayz_Magazines,false]] call callRpcProcedure;			
 			
-			dayzPlayerSave = [player,dayz_Magazines,false];
-			publicVariableServer "dayzPlayerSave";
-			
-			if (isServer) then {
-				dayzPlayerSave call server_playerSync;
-			};
-						
 			dayz_lastSave = time;
 			dayz_Magazines = [];
 		};
@@ -275,7 +250,7 @@ while {true} do {
 	//dayz_playerTrigger attachTo [_refObj,[0,0,0]];
 	//dayz_playerTrigger setTriggerArea [_size,_size,0,false];
 
-    //Debug Info
+ //Debug Info
             _headShots =    player getVariable["headShots",0];
             _kills =                player getVariable["zombieKills",0];
             _killsH =               player getVariable["humanKills",0];
