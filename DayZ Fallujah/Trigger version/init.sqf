@@ -7,6 +7,7 @@ enableSaving [false, false];
 
 //REALLY IMPORTANT VALUES
 dayZ_instance =	1;					//The instance
+hiveInUse = true;
 dayzHiveRequest = [];
 initialized = false;
 dayz_previousID = 0;
