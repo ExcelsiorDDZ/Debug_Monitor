@@ -30,6 +30,12 @@ All Version are updated when released on DayZ Commander!
 ##Installation
 Installing takes around 5-10 minutes depending on your skill level.
 
+* These files are just to compare to your mission files, So that you know what to change to get the Debug monitor working on the version you have. 
+* If you do nownload these files remember to change the following.
+* 1 Instance ID
+* 2 Depending on what Hive you use you will have to add a few lines or remove a line. Compare it to yours before replacing.
+
+
 ##Author
 P1-Kashwak
 
