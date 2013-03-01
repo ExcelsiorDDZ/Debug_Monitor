@@ -19,18 +19,22 @@ dayzNam_buildingLoot = "CfgBuildingLootNamalsk"; 		// CfgBuildingLootNamalskNOER
 player setVariable ["BIS_noCoreConversations", true]; 	// Disable greeting menu
 //enableRadio false; 									// Disable global chat radio messages
 
-call compile preprocessFileLineNumbers "\nst\ns_dayz\code\init\variables.sqf";
+//call compile preprocessFileLineNumbers "\nst\ns_dayz\code\init\variables.sqf";
+call compile preprocessFileLineNumbers "debug\variables.sqf";
 progressLoadingScreen 0.1;
 call compile preprocessFileLineNumbers "\z\addons\dayz_code\init\publicEH.sqf";
 progressLoadingScreen 0.2;
 call compile preprocessFileLineNumbers "\z\addons\dayz_code\medical\setup_functions_med.sqf";
 progressLoadingScreen 0.4;
-call compile preprocessFileLineNumbers "\nst\ns_dayz\code\init\compiles.sqf";
+//call compile preprocessFileLineNumbers "\nst\ns_dayz\code\init\compiles.sqf";
+call compile preprocessFileLineNumbers "debug\compiles.sqf";
 progressLoadingScreen 1.0;
 
 // Set Tonemapping
 "Filmic" setToneMappingParams [0.153, 0.357, 0.231, 0.1573, 0.011, 3.750, 6, 4];
 setToneMapping "Filmic";
+
+player_spawn_2 = compile preprocessFileLineNumbers "debug\player_spawn_2.sqf";
 
 // Run the server monitor
 if (isServer) then {
