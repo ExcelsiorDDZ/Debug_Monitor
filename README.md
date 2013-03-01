@@ -42,7 +42,7 @@ Trigger version will not work with FPS, Will be looking into this further and se
 ##Author
 P1-Kashwak
 
-###Credits
+##Credits
 * Citidel
 * Torndeco
 * Dirty Rat
