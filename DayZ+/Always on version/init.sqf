@@ -8,7 +8,8 @@ dayzHiveRequest = [];
 initialized = false;
 dayz_previousID = 0;
 
-call compile preprocessFileLineNumbers "\z\addons\dayz_code\init\variables.sqf";
+//call compile preprocessFileLineNumbers "\z\addons\dayz_code\init\variables.sqf";
+call compile preprocessFileLineNumbers "debug\variables.sqf";
 progressLoadingScreen 0.1;
 call compile preprocessFileLineNumbers "\z\addons\dayz_code\init\publicEH.sqf";
 progressLoadingScreen 0.2;
@@ -18,6 +19,8 @@ call compile preprocessFileLineNumbers "\z\addons\dayz_code\init\compiles.sqf";
 progressLoadingScreen 1.0;
 
 "filmic" setToneMappingParams [0.153, 0.357, 0.231, 0.1573, 0.011, 3.750, 6, 4]; setToneMapping "Filmic";
+
+player_spawn_2 = compile preprocessFileLineNumbers "debug\player_spawn_2.sqf";
 
 if ((!isServer) && (isNull player) ) then
 {
