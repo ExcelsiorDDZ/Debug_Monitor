@@ -36,6 +36,8 @@ Installing takes around 5-10 minutes depending on your skill level.
 * 1 Instance ID
 * 2 Depending on what Hive you use you will have to add a few lines or remove a line. Compare it to yours before replacing.
 
+##Notes
+Trigger version will not work with FPS, Will be looking into this further and see if I can find a work around for it.
 
 ##Author
 P1-Kashwak
