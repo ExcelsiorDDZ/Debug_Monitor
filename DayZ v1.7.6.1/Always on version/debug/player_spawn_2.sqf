@@ -294,27 +294,16 @@ while {true} do {
 		",
 
 		// these are the %# lines called from above
-		// 1%
-		(name player),
-		// 2%
-		(player getVariable['zombieKills', 0]),
-		// 3%
-		(player getVariable['headShots', 0]),
-		// 4%
-		(player getVariable['humanKills', 0]),
-		// 5%
-		(player getVariable['banditKills', 0]),
-		// 6%
-		(player getVariable['humanity', 0]),
-		// 7%
-		(dayz_skilllevel),
-		// 8%
-		(count entities "zZombie_Base"),
-		// 9%
-		({alive _x} count entities "zZombie_Base"),
-		// 10%
-		(r_player_blood),
-
+		(name player), //%1
+		(player getVariable['zombieKills', 0]), //%2
+		(player getVariable['headShots', 0]), //%3
+		(player getVariable['humanKills', 0]), //%4
+		(player getVariable['banditKills', 0]), //%5
+		(player getVariable['humanity', 0]) //%6
+		(dayz_skilllevel), //%7
+		(count entities "zZombie_Base"), //%8
+		({alive _x} count entities "zZombie_Base"), //%9
+		(r_player_blood) //%10
 	];
 
 	// If in combat, display counter and restrict logout
