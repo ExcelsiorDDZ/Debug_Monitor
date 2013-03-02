@@ -1,3 +1,5 @@
+// DEBUG MONITOR ADDED FILE
+
 private["_refObj","_size","_vel","_speed","_hunger","_thirst","_array","_unsaved","_timeOut","_result","_lastSave"];
 disableSerialization;
 _timeOut = 	0;
@@ -135,7 +137,7 @@ while {true} do {
 	};
 	dayz_thirst = dayz_thirst + (_thirst / 60) * (dayz_temperatur / dayz_temperaturnormal);	//TeeChange Temperatur effects added Max Effects: -25% and + 16.6% waterloss
 
-	//Temperatur
+	//Temperature
 	2 call player_temp_calculation; //2 = sleep time of this loop		//TeeChange
 	if ((_lastTemp - dayz_temperatur) > 0.75 or (_lastTemp - dayz_temperatur) < -0.75 ) then {
 		player setVariable ["temperature",dayz_temperatur,true];
@@ -216,7 +218,7 @@ while {true} do {
 		};
 	};
 	
-	//Record low bloow
+	//Record low blood
 	_lowBlood = player getVariable ["USEC_lowBlood", false];
 	if ((r_player_blood < r_player_bloodTotal) and !_lowBlood) then {
 		player setVariable["USEC_lowBlood",true,true];
@@ -276,32 +278,44 @@ while {true} do {
 	//dayz_playerTrigger setTriggerArea [_size,_size,0,false];
 
     //Debug Info
-            _headShots =    player getVariable["headShots",0];
-            _kills =                player getVariable["zombieKills",0];
-            _killsH =               player getVariable["humanKills",0];
-            _killsB =               player getVariable["banditKills",0];
-            _humanity =             player getVariable["humanity",0];
-            _zombies =              count entities "zZombie_Base";
-            _zombiesA =     {alive _x} count entities "zZombie_Base";
 
-                    hintSilent parseText format ["
-	<t size='1.20' font='Bitstream' color='#5882FA'>%1</t><br/><br/>
-	<t size='1.15' font='Bitstream' color='#5882FA'>Survived %7 Days</t><br/>
-	<t size='1.15' font='Bitstream' align='left'>Zombies Killed: </t><t size='1.15' font='Bitstream' align='right'>%2</t><br/>
-	<t size='1.15' font='Bitstream' align='left'>Headshots: </t><t size='1.15' font='Bitstream' align='right'>%3</t><br/>
-	<t size='1.15' font='Bitstream' align='left'>Murders: </t><t size='1.15' font='Bitstream' align='right'>%4</t><br/>
-	<t size='1.15' font='Bitstream' align='left'>Bandits Killed: </t><t size='1.15' font='Bitstream' align='right'>%5</t><br/>
-	<t size='1.15' font='Bitstream' align='left'>Zombies (alive/total): </t><t size='1.15' font='Bitstream' align='right'>%9/%8</t><br/>
-	<t size='1.15' font='Bitstream' align='left'>Humanity: </t><t size='1.15' font='Bitstream' align='right'>%6</t><br/>",
-	(name player),
-	(player getVariable['zombieKills', 0]),
-	(player getVariable['headShots', 0]),
-	(player getVariable['humanKills', 0]),
-	(player getVariable['banditKills', 0]),
-	(player getVariable['humanity', 0]),
-	(dayz_skilllevel),
-	(count entities "zZombie_Base"),
-	({alive _x} count entities "zZombie_Base")];
+    hintSilent parseText format [
+		"
+		<t size='1.50' font='Bitstream' color='#FE2E2E'>SERVER NAME HERE</t><br/>				
+		<t size='1.20' font='Bitstream' color='#5882FA'>%1</t><br/>
+		<t size='1.15' font='Bitstream' color='#FFFF00'>Survived %7 Days</t><br/><br/>
+		<t size='1.15' font='Bitstream' align='left'>Zombies Killed: </t><t size='1.15' font='Bitstream' align='right'>%2</t><br/>
+		<t size='1.15' font='Bitstream' align='left'>Headshots: </t><t size='1.15' font='Bitstream' align='right'>%3</t><br/>
+		<t size='1.15' font='Bitstream' align='left'>Murders: </t><t size='1.15' font='Bitstream' align='right'>%4</t><br/>
+		<t size='1.15' font='Bitstream' align='left'>Bandits Killed: </t><t size='1.15' font='Bitstream' align='right'>%5</t><br/>
+		<t size='1.15' font='Bitstream' align='left'>Zombies (alive/total): </t><t size='1.15' font='Bitstream' align='right'>%9/%8</t><br/>
+		<t size='1.15' font='Bitstream' align='left'>Humanity: </t><t size='1.15' font='Bitstream' align='right'>%6</t><br/>
+		<t size='1.15' font='Bitstream' align='left'>Blood:</t><t size='1.15' font='Bitstream' align='right'>%10</t><br/>
+		",
+
+		// these are the %# lines called from above
+		// 1%
+		(name player),
+		// 2%
+		(player getVariable['zombieKills', 0]),
+		// 3%
+		(player getVariable['headShots', 0]),
+		// 4%
+		(player getVariable['humanKills', 0]),
+		// 5%
+		(player getVariable['banditKills', 0]),
+		// 6%
+		(player getVariable['humanity', 0]),
+		// 7%
+		(dayz_skilllevel),
+		// 8%
+		(count entities "zZombie_Base"),
+		// 9%
+		({alive _x} count entities "zZombie_Base"),
+		// 10%
+		(r_player_blood),
+
+	];
 
 	// If in combat, display counter and restrict logout
 	_startcombattimer      = player getVariable["startcombattimer",0];
